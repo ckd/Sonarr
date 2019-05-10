@@ -19,8 +19,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
             series.ForEach(s =>
             {
-                s.CleanTitle = s.CleanTitle.CleanSeriesTitle();
-                _seriesRepository.Update(s);
+                var cleanTitle = s.CleanTitle.CleanSeriesTitle();
+                if (s.CleanTitle != cleanTitle)
+                {
+                    s.CleanTitle = s.CleanTitle.CleanSeriesTitle();
+                    _seriesRepository.Update(s);
+                }
             });
         }
     }
